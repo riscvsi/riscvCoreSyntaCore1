@@ -60,7 +60,7 @@
 // Uncomment one of these defines to set the recommended configuration:
 
 //`define SCR1_CFG_RV32IMC_MAX
-//`define SCR1_CFG_RV32IC_BASE
+`define SCR1_CFG_RV32IC_BASE
 //`define SCR1_CFG_RV32EC_MIN
 
 // If all defines are commented, custom configuration will be used (see below)
@@ -85,9 +85,9 @@
   `define SCR1_TCM_EN
 `elsif  SCR1_CFG_RV32IC_BASE
   `define SCR1_RVI_EXT
-  `define SCR1_RVC_EXT
+  //`define SCR1_RVC_EXT
   parameter int unsigned SCR1_MTVEC_BASE_WR_BITS = 16;
-  `define SCR1_MTVEC_MODE_EN
+  //`define SCR1_MTVEC_MODE_EN
   `define SCR1_NO_DEC_STAGE
   `define SCR1_MPRF_RST_EN
   `define SCR1_MCOUNTEN_EN
@@ -119,8 +119,8 @@
 
 // RISC-V ISA options
 //`define SCR1_RVE_EXT                // enable RV32E base integer instruction set, otherwise RV32I will be used
-`define SCR1_RVM_EXT                // enable standard extension "M" for integer hardware multiplier and divider
-`define SCR1_RVC_EXT                // enable standard extension "C" for compressed instructions
+//`define SCR1_RVM_EXT                // enable standard extension "M" for integer hardware multiplier and divider
+//`define SCR1_RVC_EXT                // enable standard extension "C" for compressed instructions
 parameter int unsigned SCR1_MTVEC_BASE_WR_BITS = 26;    // number of writable high-order bits in MTVEC.base field
                                                             // legal values are 0 to 26
                                                             // read-only bits are hardwired to reset value
@@ -134,7 +134,7 @@ parameter int unsigned SCR1_MTVEC_BASE_WR_BITS = 26;    // number of writable hi
 `define SCR1_NO_DEC_STAGE           // disable register between IFU and IDU
 `define SCR1_NO_EXE_STAGE           // disable register between IDU and EXU
 `define SCR1_NEW_PC_REG             // enable register in IFU for New_PC value
-`define SCR1_FAST_MUL               // enable fast one-cycle multiplication, otherwise multiplication takes 32 cycles
+//`define SCR1_FAST_MUL               // enable fast one-cycle multiplication, otherwise multiplication takes 32 cycles
 `define SCR1_CLKCTRL_EN             // enable global clock gating
 `define SCR1_MPRF_RST_EN            // enable reset for MPRF
 `define SCR1_MCOUNTEN_EN            // enable custom MCOUNTEN CSR for counter control
