@@ -242,28 +242,6 @@ assign pwrup_rst_n_sync   = pwrup_rst_n;
 assign rst_n_sync         = rst_n;
 assign cpu_rst_n_sync     = cpu_rst_n;
 assign core_rst_n_in_sync = rst_n_sync & cpu_rst_n_sync;
-
-// Core Reset: core_rst_n
-scr1_reset_qlfy_adapter_cell_sync i_core_rstn_qlfy_adapter_cell_sync (
-    .rst_n              (pwrup_rst_n_sync  ),
-    .clk                (clk               ),
-    .test_rst_n         (test_rst_n        ),
-    .test_mode          (test_mode         ),
-    .reset_n_in_sync    (core_rst_n_in_sync),
-    .reset_n_out_qlfy   (core_rst_n_qlfy   ),
-    .reset_n_out        (core_rst_n        ),
-    .reset_n_status     (core_rst_n_status )
-);
-
-scr1_data_sync_cell #(
-    .STAGES_AMOUNT      (SCR1_CORE_TOP_RST_SYNC_STAGES_NUM)
-) i_core_rstn_status_sync (
-    .rst_n               (pwrup_rst_n_sync      ),
-    .clk                 (clk                   ),
-    .data_in             (core_rst_n_status     ),
-    .data_out            (core_rst_n_status_sync)
-);
-
 assign core_rst_status      = ~core_rst_n_status_sync;
 assign core_rdc_qlfy_o      = core_rst_n_qlfy;
 

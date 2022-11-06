@@ -7,20 +7,15 @@
 `include "scr1_arch_types.svh"
 
 module scr1_pipe_mprf (
-    // Common
-`ifdef SCR1_MPRF_RST_EN
     input   logic                               rst_n,                      // MPRF reset
-`endif // SCR1_MPRF_RST_EN
     input   logic                               clk,                        // MPRF clock
-
-    // EXU <-> MPRF interface
-    input   logic [`SCR1_MPRF_AWIDTH-1:0]       exu2mprf_rs1_addr_i,        // MPRF rs1 read address
-    output  logic [`SCR1_XLEN-1:0]              mprf2exu_rs1_data_o,        // MPRF rs1 read data
-    input   logic [`SCR1_MPRF_AWIDTH-1:0]       exu2mprf_rs2_addr_i,        // MPRF rs2 read address
-    output  logic [`SCR1_XLEN-1:0]              mprf2exu_rs2_data_o,        // MPRF rs2 read data
+    input   logic [4:0]       exu2mprf_rs1_addr_i,        // MPRF rs1 read address
+    output  logic [31:0]              mprf2exu_rs1_data_o,        // MPRF rs1 read data
+    input   logic [4:0]       exu2mprf_rs2_addr_i,        // MPRF rs2 read address
+    output  logic [31:0]              mprf2exu_rs2_data_o,        // MPRF rs2 read data
     input   logic                               exu2mprf_w_req_i,           // MPRF write request
-    input   logic [`SCR1_MPRF_AWIDTH-1:0]       exu2mprf_rd_addr_i,         // MPRF rd write address
-    input   logic [`SCR1_XLEN-1:0]              exu2mprf_rd_data_i          // MPRF rd write data
+    input   logic [4:0]       exu2mprf_rd_addr_i,         // MPRF rd write address
+    input   logic [31:0]              exu2mprf_rd_data_i          // MPRF rd write data
 );
 
 //-------------------------------------------------------------------------------

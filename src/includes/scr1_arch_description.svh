@@ -45,7 +45,7 @@
 // `define SCR1_TRGT_FPGA_INTEL_MAX10   // target platform is Intel MAX 10 FPGAs (used in the SCR1-SDK project)
 // `define SCR1_TRGT_FPGA_INTEL_ARRIAV  // target platform is Intel Arria V FPGAs (used in the SCR1-SDK project)
 // `define SCR1_TRGT_FPGA_XILINX        // target platform is Xilinx FPGAs (used in the SCR1-SDK project)
-// `define SCR1_TRGT_ASIC               // target platform is ASIC
+ `define SCR1_TRGT_ASIC               // target platform is ASIC
 // `define SCR1_TRGT_SIMULATION         // target is simulation (enable simulation code)
 
  `include "scr1_arch_custom.svh"
@@ -89,14 +89,14 @@
   parameter int unsigned SCR1_MTVEC_BASE_WR_BITS = 16;
   //`define SCR1_MTVEC_MODE_EN
   `define SCR1_NO_DEC_STAGE
-  `define SCR1_MPRF_RST_EN
+  //`define SCR1_MPRF_RST_EN
   `define SCR1_MCOUNTEN_EN
-  `define SCR1_DBG_EN
-  `define SCR1_TDU_EN
+  //`define SCR1_DBG_EN
+  //`define SCR1_TDU_EN
   parameter int unsigned SCR1_TDU_TRIG_NUM = 2;
   `define SCR1_TDU_ICOUNT_EN
-  `define SCR1_IPIC_EN
-  `define SCR1_IPIC_SYNC_EN
+  //`define SCR1_IPIC_EN
+  //`define SCR1_IPIC_SYNC_EN
   `define SCR1_TCM_EN
 `elsif  SCR1_CFG_RV32EC_MIN
   `define SCR1_RVE_EXT
@@ -135,17 +135,17 @@ parameter int unsigned SCR1_MTVEC_BASE_WR_BITS = 26;    // number of writable hi
 `define SCR1_NO_EXE_STAGE           // disable register between IDU and EXU
 `define SCR1_NEW_PC_REG             // enable register in IFU for New_PC value
 //`define SCR1_FAST_MUL               // enable fast one-cycle multiplication, otherwise multiplication takes 32 cycles
-`define SCR1_CLKCTRL_EN             // enable global clock gating
+//`define SCR1_CLKCTRL_EN             // enable global clock gating
 `define SCR1_MPRF_RST_EN            // enable reset for MPRF
-`define SCR1_MCOUNTEN_EN            // enable custom MCOUNTEN CSR for counter control
+//`define SCR1_MCOUNTEN_EN            // enable custom MCOUNTEN CSR for counter control
 
 // Uncore options
-`define SCR1_DBG_EN                 // enable Debug Subsystem (TAPC, DM, SCU, HDU)
-`define SCR1_TDU_EN                 // enable Trigger Debug Unit (hardware breakpoints)
+//`define SCR1_DBG_EN                 // enable Debug Subsystem (TAPC, DM, SCU, HDU)
+//`define SCR1_TDU_EN                 // enable Trigger Debug Unit (hardware breakpoints)
 parameter int unsigned SCR1_TDU_TRIG_NUM = 2;   // number of hardware triggers
-`define SCR1_TDU_ICOUNT_EN          // enable hardware triggers on instruction counter
-`define SCR1_IPIC_EN                // enable Integrated Programmable Interrupt Controller
-`define SCR1_IPIC_SYNC_EN           // enable IPIC synchronizer
+//`define SCR1_TDU_ICOUNT_EN          // enable hardware triggers on instruction counter
+//`define SCR1_IPIC_EN                // enable Integrated Programmable Interrupt Controller
+//`define SCR1_IPIC_SYNC_EN           // enable IPIC synchronizer
 `define SCR1_TCM_EN                 // enable Tightly-Coupled Memory
 
 `endif // end custom configuration section

@@ -20,7 +20,7 @@ module scr1_tcm
     output  logic                           imem_req_ack,
     input   logic                           imem_req,
     input   logic [`SCR1_IMEM_AWIDTH-1:0]   imem_addr,
-    output  logic [`SCR1_IMEM_DWIDTH-1:0]   imem_rdata,
+    output  logic [31:0]   imem_rdata,
     output  type_scr1_mem_resp_e            imem_resp,
 
     // Core data interface
@@ -28,9 +28,9 @@ module scr1_tcm
     input   logic                           dmem_req,
     input   type_scr1_mem_cmd_e             dmem_cmd,
     input   type_scr1_mem_width_e           dmem_width,
-    input   logic [`SCR1_DMEM_AWIDTH-1:0]   dmem_addr,
-    input   logic [`SCR1_DMEM_DWIDTH-1:0]   dmem_wdata,
-    output  logic [`SCR1_DMEM_DWIDTH-1:0]   dmem_rdata,
+    input   logic [31:0]   dmem_addr,
+    input   logic [31:0]   dmem_wdata,
+    output  logic [31:0]   dmem_rdata,
     output  type_scr1_mem_resp_e            dmem_resp
 );
 
