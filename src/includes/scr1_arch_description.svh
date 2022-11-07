@@ -68,21 +68,21 @@
 //------------------------------------------------------------------------------
 // READ-ONLY: settings for recommended configurations
 `ifdef  SCR1_CFG_RV32IMC_MAX
-  `define SCR1_RVI_EXT
-  `define SCR1_RVM_EXT
-  `define SCR1_RVC_EXT
-  parameter int unsigned SCR1_MTVEC_BASE_WR_BITS = 26;
-  `define SCR1_MTVEC_MODE_EN
-  `define SCR1_FAST_MUL
-  `define SCR1_MPRF_RST_EN
-  `define SCR1_MCOUNTEN_EN
-  `define SCR1_DBG_EN
-  `define SCR1_TDU_EN
-  parameter int unsigned SCR1_TDU_TRIG_NUM = 4;
-  `define SCR1_TDU_ICOUNT_EN
-  `define SCR1_IPIC_EN
-  `define SCR1_IPIC_SYNC_EN
-  `define SCR1_TCM_EN
+  //`define SCR1_RVI_EXT
+  //`define SCR1_RVM_EXT
+  //`define SCR1_RVC_EXT
+  //parameter int unsigned SCR1_MTVEC_BASE_WR_BITS = 26;
+  //`define SCR1_MTVEC_MODE_EN
+  //`define SCR1_FAST_MUL
+  //`define SCR1_MPRF_RST_EN
+  //`define SCR1_MCOUNTEN_EN
+  //`define SCR1_DBG_EN
+  //`define SCR1_TDU_EN
+  //parameter int unsigned SCR1_TDU_TRIG_NUM = 4;
+  //`define SCR1_TDU_ICOUNT_EN
+  //`define SCR1_IPIC_EN
+  //`define SCR1_IPIC_SYNC_EN
+  //`define SCR1_TCM_EN
 `elsif  SCR1_CFG_RV32IC_BASE
   `define SCR1_RVI_EXT
   //`define SCR1_RVC_EXT
@@ -99,12 +99,12 @@
   //`define SCR1_IPIC_SYNC_EN
   `define SCR1_TCM_EN
 `elsif  SCR1_CFG_RV32EC_MIN
-  `define SCR1_RVE_EXT
-  `define SCR1_RVC_EXT
-  parameter int unsigned SCR1_MTVEC_BASE_WR_BITS = 0;
-  `define SCR1_NO_DEC_STAGE
-  `define SCR1_NO_EXE_STAGE
-  `define SCR1_TCM_EN
+  //`define SCR1_RVE_EXT
+  //`define SCR1_RVC_EXT
+  //parameter int unsigned SCR1_MTVEC_BASE_WR_BITS = 0;
+  //`define SCR1_NO_DEC_STAGE
+  //`define SCR1_NO_EXE_STAGE
+  //`define SCR1_TCM_EN
 
 `else // begin custom configuration section
 
