@@ -48,20 +48,6 @@ module scr1_pipe_ifu
     // IFU <-> EXU New PC interface
     input   logic                                   exu2ifu_pc_new_req_i,       // New PC request (jumps, branches, traps etc)
     input   logic [`SCR1_XLEN-1:0]                  exu2ifu_pc_new_i,           // New PC
-
-`ifdef SCR1_DBG_EN
-    // IFU <-> HDU Program Buffer interface
-    input   logic                                   hdu2ifu_pbuf_fetch_i,       // Fetch instructions provided by Program Buffer
-    output  logic                                   ifu2hdu_pbuf_rdy_o,         // Program Buffer Instruction i/f ready
-    input   logic                                   hdu2ifu_pbuf_vd_i,          // Program Buffer Instruction valid
-    input   logic                                   hdu2ifu_pbuf_err_i,         // Program Buffer Instruction i/f error
-    input   logic [SCR1_HDU_CORE_INSTR_WIDTH-1:0]   hdu2ifu_pbuf_instr_i,       // Program Buffer Instruction itself
-`endif // SCR1_DBG_EN
-
-`ifdef SCR1_CLKCTRL_EN
-    output  logic                                   ifu2pipe_imem_txns_pnd_o,   // There are pending imem transactions
-`endif // SCR1_CLKCTRL_EN
-
     // IFU <-> IDU interface
     input   logic                                   idu2ifu_rdy_i,              // IDU ready for new data
     output  logic [`SCR1_IMEM_DWIDTH-1:0]           ifu2idu_instr_o,            // IFU instruction
@@ -758,69 +744,5 @@ end
 assign ifu2hdu_pbuf_rdy_o = idu2ifu_rdy_i;
 `endif // SCR1_DBG_EN
 
-`ifdef SCR1_TRGT_SIMULATION
-
-//------------------------------------------------------------------------------
-// Assertions
-//------------------------------------------------------------------------------
-
-// X checks
-
-SCR1_SVA_IFU_XCHECK : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    !$isunknown({imem2ifu_req_ack_i, idu2ifu_rdy_i, exu2ifu_pc_new_req_i})
-    ) else $error("IFU Error: unknown values");
-
-SCR1_SVA_IFU_XCHECK_REQ : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    ifu2imem_req_o |-> !$isunknown({ifu2imem_addr_o, ifu2imem_cmd_o})
-    ) else $error("IFU Error: unknown {ifu2imem_addr_o, ifu2imem_cmd_o}");
-
-// Behavior checks
-
-SCR1_SVA_IFU_DRC_UNDERFLOW : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    ~imem_resp_discard_req |=> ~(imem_resp_discard_cnt == SCR1_TXN_CNT_W'('1))
-    ) else $error("IFU Error: imem_resp_discard_cnt underflow");
-
-SCR1_SVA_IFU_DRC_RANGE : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    (imem_resp_discard_cnt >= 0) & (imem_resp_discard_cnt <= imem_pnd_txns_cnt)
-    ) else $error("IFU Error: imem_resp_discard_cnt out of range");
-
-SCR1_SVA_IFU_QUEUE_OVF : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    (q_ocpd_h >= SCR1_IFU_Q_FREE_H_W'(SCR1_IFU_Q_SIZE_HALF-1)) |->
-    ((q_ocpd_h == SCR1_IFU_Q_FREE_H_W'(SCR1_IFU_Q_SIZE_HALF-1)) ? (q_wr_size != SCR1_IFU_QUEUE_WR_FULL)
-                                                                : (q_wr_size == SCR1_IFU_QUEUE_WR_NONE))
-    ) else $error("IFU Error: queue overflow");
-
-SCR1_SVA_IFU_IMEM_ERR_BEH : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    (imem_resp_er & ~imem_resp_discard_req & ~exu2ifu_pc_new_req_i) |=>
-    (ifu_fsm_curr == SCR1_IFU_FSM_IDLE) & (imem_resp_discard_cnt == imem_pnd_txns_cnt)
-    ) else $error("IFU Error: incorrect behavior after memory error");
-
-SCR1_SVA_IFU_NEW_PC_REQ_BEH : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    exu2ifu_pc_new_req_i |=> q_is_empty
-    ) else $error("IFU Error: incorrect behavior after exu2ifu_pc_new_req_i");
-
-SCR1_SVA_IFU_IMEM_ADDR_ALIGNED : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    ifu2imem_req_o |-> ~|ifu2imem_addr_o[1:0]
-    ) else $error("IFU Error: unaligned IMEM access");
-
-SCR1_SVA_IFU_STOP_FETCH : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    pipe2ifu_stop_fetch_i |=> (ifu_fsm_curr == SCR1_IFU_FSM_IDLE)
-    ) else $error("IFU Error: fetch not stopped");
-
-SCR1_SVA_IFU_IMEM_FAULT_RVI_HI : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    ifu2idu_err_rvi_hi_o |-> ifu2idu_imem_err_o
-    ) else $error("IFU Error: ifu2idu_imem_err_o == 0");
-
-`endif // SCR1_TRGT_SIMULATION
 
 endmodule : scr1_pipe_ifu

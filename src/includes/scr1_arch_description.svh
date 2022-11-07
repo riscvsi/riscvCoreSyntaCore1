@@ -132,11 +132,11 @@ parameter int unsigned SCR1_MTVEC_BASE_WR_BITS = 26;    // number of writable hi
 
 // Core pipeline options (power-performance-area optimization)
 `define SCR1_NO_DEC_STAGE           // disable register between IFU and IDU
-`define SCR1_NO_EXE_STAGE           // disable register between IDU and EXU
+//`define SCR1_NO_EXE_STAGE           // disable register between IDU and EXU
 `define SCR1_NEW_PC_REG             // enable register in IFU for New_PC value
 //`define SCR1_FAST_MUL               // enable fast one-cycle multiplication, otherwise multiplication takes 32 cycles
 //`define SCR1_CLKCTRL_EN             // enable global clock gating
-`define SCR1_MPRF_RST_EN            // enable reset for MPRF
+//`define SCR1_MPRF_RST_EN            // enable reset for MPRF
 //`define SCR1_MCOUNTEN_EN            // enable custom MCOUNTEN CSR for counter control
 
 // Uncore options
@@ -211,5 +211,7 @@ localparam [`SCR1_XLEN-1:0]      SCR1_SIM_EXIT_ADDR      = 32'h0000_00F8;
 localparam [`SCR1_XLEN-1:0]      SCR1_SIM_PRINT_ADDR     = 32'hF000_0000;
 localparam [`SCR1_XLEN-1:0]      SCR1_SIM_EXT_IRQ_ADDR   = 32'hF000_0100;
 localparam [`SCR1_XLEN-1:0]      SCR1_SIM_SOFT_IRQ_ADDR  = 32'hF000_0200;
+
+`undef  SCR1_NO_EXE_STAGE
 
 `endif // SCR1_ARCH_DESCRIPTION_SVH

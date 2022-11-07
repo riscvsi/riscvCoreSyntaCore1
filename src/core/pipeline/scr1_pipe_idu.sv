@@ -39,10 +39,8 @@ module scr1_pipe_idu
     output  type_scr1_exu_cmd_s             idu2exu_cmd_o,          // IDU command
     output  logic                           idu2exu_use_rs1_o,      // Instruction uses rs1
     output  logic                           idu2exu_use_rs2_o,      // Instruction uses rs2
-`ifndef SCR1_NO_EXE_STAGE
     output  logic                           idu2exu_use_rd_o,       // Instruction uses rd
     output  logic                           idu2exu_use_imm_o,      // Instruction uses immediate
-`endif // SCR1_NO_EXE_STAGE
     input   logic                           exu2idu_rdy_i           // EXU ready for new data
 );
 
@@ -117,10 +115,8 @@ always_comb begin
     // Clock gating
     idu2exu_use_rs1_o         = 1'b0;
     idu2exu_use_rs2_o         = 1'b0;
-`ifndef SCR1_NO_EXE_STAGE
     idu2exu_use_rd_o          = 1'b0;
     idu2exu_use_imm_o         = 1'b0;
-`endif // SCR1_NO_EXE_STAGE
 
     rvi_illegal             = 1'b0;
 `ifdef SCR1_RVE_EXT
@@ -908,33 +904,5 @@ always_comb begin
 
 end // RV32I(MC) decode
 
-`ifdef SCR1_TRGT_SIMULATION
-//-------------------------------------------------------------------------------
-// Assertion
-//-------------------------------------------------------------------------------
-
-// X checks
-
-SCR1_SVA_IDU_XCHECK : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    !$isunknown({ifu2idu_vd_i, exu2idu_rdy_i})
-    ) else $error("IDU Error: unknown values");
-
-// Behavior checks
-
-SCR1_SVA_IDU_IALU_CMD_RANGE : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    (ifu2idu_vd_i & ~ifu2idu_imem_err_i) |->
-    ((idu2exu_cmd_o.ialu_cmd >= SCR1_IALU_CMD_NONE) &
-    (idu2exu_cmd_o.ialu_cmd <=
-`ifdef SCR1_RVM_EXT
-                            SCR1_IALU_CMD_REMU
-`else
-                            SCR1_IALU_CMD_SRA
-`endif // SCR1_RVM_EXT
-        ))
-    ) else $error("IDU Error: IALU_CMD out of range");
-
-`endif // SCR1_TRGT_SIMULATION
 
 endmodule : scr1_pipe_idu

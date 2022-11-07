@@ -146,17 +146,5 @@ end
  `endif // ~SCR1_MPRF_RST_EN
 `endif
 
-`ifdef SCR1_TRGT_SIMULATION
-//-------------------------------------------------------------------------------
-// Assertion
-//-------------------------------------------------------------------------------
-`ifdef SCR1_MPRF_RST_EN
-SCR1_SVA_MPRF_WRITEX : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    exu2mprf_w_req_i |-> !$isunknown({exu2mprf_rd_addr_i, (|exu2mprf_rd_addr_i ? exu2mprf_rd_data_i : `SCR1_XLEN'd0)})
-    ) else $error("MPRF error: unknown values");
-`endif // SCR1_MPRF_RST_EN
-
-`endif // SCR1_TRGT_SIMULATION
 
 endmodule : scr1_pipe_mprf

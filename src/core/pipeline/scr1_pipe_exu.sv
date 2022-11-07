@@ -55,21 +55,14 @@ module scr1_pipe_exu (
     // Common
     input   logic                               rst_n,                      // EXU reset
     input   logic                               clk,                        // Gated EXU clock
-`ifdef SCR1_CLKCTRL_EN
-    input   logic                               clk_alw_on,                 // Not-gated EXU clock
-    input   logic                               clk_pipe_en,                // EXU clock enabled flag
-`endif // SCR1_CLKCTRL_EN
-
     // EXU <-> IDU interface
     input   logic                               idu2exu_req_i,              // Request form IDU to EXU
     output  logic                               exu2idu_rdy_o,              // EXU ready for new data from IDU
     input   type_scr1_exu_cmd_s                 idu2exu_cmd_i,              // EXU command
     input   logic                               idu2exu_use_rs1_i,          // Clock gating on rs1_addr field
     input   logic                               idu2exu_use_rs2_i,          // Clock gating on rs2_addr field
-`ifndef SCR1_NO_EXE_STAGE
     input   logic                               idu2exu_use_rd_i,           // Clock gating on rd_addr field
     input   logic                               idu2exu_use_imm_i,          // Clock gating on imm field
-`endif // SCR1_NO_EXE_STAGE
 
     // EXU <-> MPRF interface
     output  logic [`SCR1_MPRF_AWIDTH-1:0]       exu2mprf_rs1_addr_o,        // MPRF rs1 read address
@@ -122,39 +115,9 @@ module scr1_pipe_exu (
 `endif // SCR1_CSR_REDUCED_CNT
     output  logic                               exu2pipe_exu_busy_o,        // EXU busy
 
-`ifdef SCR1_DBG_EN
-    // EXU <-> HDU interface
-    input   logic                               hdu2exu_no_commit_i,        // Forbid instruction commitment
-    input   logic                               hdu2exu_irq_dsbl_i,         // Disable IRQ
-    input   logic                               hdu2exu_pc_advmt_dsbl_i,    // Forbid PC advancement
-    input   logic                               hdu2exu_dmode_sstep_en_i,   // Enable single-step
-    input   logic                               hdu2exu_pbuf_fetch_i,       // Take instructions from Program Buffer
-    input   logic                               hdu2exu_dbg_halted_i,       // Debug halted state
-    input   logic                               hdu2exu_dbg_run2halt_i,     // Transition to debug halted state
-    input   logic                               hdu2exu_dbg_halt2run_i,     // Transition to run state
-    input   logic                               hdu2exu_dbg_run_start_i,    // First cycle of run state
-    input   logic [`SCR1_XLEN-1:0]              hdu2exu_dbg_new_pc_i,       // New PC as starting point for HART Resume
-`endif // SCR1_DBG_EN
-
-`ifdef SCR1_TDU_EN
-    // EXU <-> TDU interface
-    output type_scr1_brkm_instr_mon_s           exu2tdu_imon_o,             // Instruction monitor
-    input  logic [SCR1_TDU_ALLTRIG_NUM-1:0]     tdu2exu_ibrkpt_match_i,     // Instruction breakpoint(s) match
-    input  logic                                tdu2exu_ibrkpt_exc_req_i,   // Instruction breakpoint exception
-    output type_scr1_brkm_lsu_mon_s             lsu2tdu_dmon_o,             // Data monitor
-    input  logic                                tdu2lsu_ibrkpt_exc_req_i,   // Instruction breakpoint exception
-    input  logic [SCR1_TDU_MTRIG_NUM-1:0]       tdu2lsu_dbrkpt_match_i,     // Data breakpoint(s) match
-    input  logic                                tdu2lsu_dbrkpt_exc_req_i,   // Data breakpoint exception
-    output logic [SCR1_TDU_ALLTRIG_NUM-1:0]     exu2tdu_ibrkpt_ret_o,       // Instruction with breakpoint flag retire
-  `ifdef SCR1_DBG_EN
-    output logic                                exu2hdu_ibrkpt_hw_o,        // Hardware breakpoint on current instruction
-  `endif // SCR1_DBG_EN
-`endif // SCR1_TDU_EN
 
     // PC interface
-`ifdef SCR1_CLKCTRL_EN
-    output  logic                               exu2pipe_wfi_halted_o,      // WFI halted state
-`endif // SCR1_CLKCTRL_EN
+
     output  logic [`SCR1_XLEN-1:0]              exu2pipe_pc_curr_o,         // Current PC
     output  logic [`SCR1_XLEN-1:0]              exu2csr_pc_next_o,          // Next PC
     output  logic                               exu2ifu_pc_new_req_o,       // New PC request
@@ -299,10 +262,6 @@ logic                               csr_access_init;
  // - EXU queue status logic
 //
 
-`ifdef SCR1_DBG_EN
-assign dbg_run_start_npbuf = hdu2exu_dbg_run_start_i & ~hdu2exu_pbuf_fetch_i;
-`endif // SCR1_DBG_EN
-
 `ifndef SCR1_NO_EXE_STAGE
 
 // EXU queue control logic
@@ -401,10 +360,6 @@ assign exu_queue     = idu2exu_cmd_i;
 
 `ifdef SCR1_RVM_EXT
 assign ialu_vd  = exu_queue_vd & (exu_queue.ialu_cmd != SCR1_IALU_CMD_NONE)
-`ifdef SCR1_TDU_EN
-                & ~tdu2exu_ibrkpt_exc_req_i
-`endif // SCR1_TDU_EN
-                ;
 `endif // SCR1_RVM_EXT
 
 always_comb begin
@@ -771,14 +726,6 @@ scr1_pipe_lsu i_lsu(
     .lsu2exu_ldata_o            (lsu_l_data              ),       // Loaded data form DMEM
     .lsu2exu_exc_o              (lsu_exc_req             ),       // LSU exception
     .lsu2exu_exc_code_o         (lsu_exc_code            ),       // LSU exception code
-
-`ifdef SCR1_TDU_EN
-    // TDU <-> LSU interface
-    .lsu2tdu_dmon_o             (lsu2tdu_dmon_o          ),
-    .tdu2lsu_ibrkpt_exc_req_i   (tdu2lsu_ibrkpt_exc_req_i),
-    .tdu2lsu_dbrkpt_exc_req_i   (tdu2lsu_dbrkpt_exc_req_i),
-`endif // SCR1_TDU_EN
-
     // Data memory interface
     .lsu2dmem_req_o             (exu2dmem_req_o          ),       // DMEM request
     .lsu2dmem_cmd_o             (exu2dmem_cmd_o          ),       // DMEM command
@@ -992,95 +939,5 @@ assign exu2csr_mret_instr_o  = exu_queue_vd & exu_queue.mret_req
                              ;
 assign exu2csr_mret_update_o = exu2csr_mret_instr_o & csr_access_init;
 
-`ifdef SCR1_TDU_EN
-//------------------------------------------------------------------------------
-// EXU <-> TDU interface
-//------------------------------------------------------------------------------
-
-// Instruction monitor
-assign exu2tdu_imon_o.vd    = exu_queue_vd;
-assign exu2tdu_imon_o.req   = exu2pipe_instret_o;
-assign exu2tdu_imon_o.addr  = pc_curr_ff;
-
-always_comb begin
-    exu2tdu_ibrkpt_ret_o = '0;
-    if (exu_queue_vd) begin
-        exu2tdu_ibrkpt_ret_o = tdu2exu_ibrkpt_match_i;
-        if (lsu_req) begin
-            exu2tdu_ibrkpt_ret_o[SCR1_TDU_MTRIG_NUM-1:0] |= tdu2lsu_dbrkpt_match_i;
-        end
-    end
-end
-`endif // SCR1_TDU_EN
-
-
-`ifdef SCR1_TRGT_SIMULATION
-//------------------------------------------------------------------------------
-// Tracelog signals
-//------------------------------------------------------------------------------
-
-logic [`SCR1_XLEN-1:0]      update_pc;
-logic                       update_pc_en;
-
-assign update_pc_en = (init_pc | exu2pipe_instret_o | exu2csr_take_irq_o)
-`ifdef SCR1_DBG_EN
-                    & ~hdu2exu_pc_advmt_dsbl_i & ~hdu2exu_no_commit_i
-`endif // SCR1_DBG_EN
-                    ;
-assign update_pc    = exu2ifu_pc_new_req_o ? exu2ifu_pc_new_o : inc_pc;
-
-
-//------------------------------------------------------------------------------
-// Assertion
-//------------------------------------------------------------------------------
-
-// X checks
-
-SCR1_SVA_EXU_XCHECK_CTRL : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    !$isunknown({idu2exu_req_i, csr2exu_irq_i, csr2exu_ip_ie_i, lsu_req, lsu_rdy, exu_exc_req})
-    ) else $error("EXU Error: unknown control values");
-
-SCR1_SVA_EXU_XCHECK_QUEUE : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    (idu2exu_req_i & exu_queue_vd) |-> !$isunknown(idu2exu_cmd_i)
-    ) else $error("EXU Error: unknown values in queue");
-
-SCR1_SVA_EXU_XCHECK_CSR_RDATA : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    exu2csr_r_req_o |-> !$isunknown({csr2exu_r_data_i, csr2exu_rw_exc_i})
-    ) else $error("EXU Error: unknown values from CSR");
-
-// Behavior checks
-
-SCR1_SVA_EXU_ONEHOT : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    $onehot0({exu_queue.jump_req, exu_queue.branch_req, lsu_req})
-    ) else $error("EXU Error: illegal combination of control signals");
-
-SCR1_SVA_EXU_ONEHOT_EXC : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    exu_queue_vd |->
-    $onehot0({exu_queue.exc_req, lsu_exc_req, csr2exu_rw_exc_i
-`ifndef SCR1_RVC_EXT
-    , jb_misalign
-`endif
-    })
-    ) else $error("EXU Error: exceptions $onehot0 failed");
-
-// No event can request current PC update before initial reset sequence is done
-SCR1_SVA_EXU_CURR_PC_UPD_BEFORE_INIT : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    ~&init_pc_v |-> ~( pc_curr_upd & ~init_pc )
-    ) else $error("EXU Error: current PC updated before been initialized");
-
-// No event can generate a new PC request to IFU before initial reset sequence
-// is done
-SCR1_SVA_EXU_NEW_PC_REQ_BEFORE_INIT : assert property (
-    @(negedge clk) disable iff (~rst_n)
-    ~&init_pc_v |-> ~( exu2ifu_pc_new_req_o & ~init_pc )
-    ) else $error("EXU Error: new PC req generated before reset sequence is done");
-
-`endif // SCR1_TRGT_SIMULATION
 
 endmodule : scr1_pipe_exu
