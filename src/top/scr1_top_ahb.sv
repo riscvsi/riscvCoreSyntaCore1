@@ -6,9 +6,7 @@
 `include "scr1_arch_description.svh"
 `include "scr1_memif.svh"
 `include "scr1_ahb.svh"
-`ifdef SCR1_IPIC_EN
-`include "scr1_ipic.svh"
-`endif // SCR1_IPIC_EN
+
 
 `ifdef SCR1_TCM_EN
  `define SCR1_IMEM_ROUTER_EN
@@ -23,37 +21,9 @@ module scr1_top_ahb (
     input   logic                                   test_rst_n,             // Test mode's reset
     input   logic                                   clk,                    // System clock
     input   logic                                   rtc_clk,                // Real-time clock
-`ifdef SCR1_DBG_EN
-    output  logic                                   sys_rst_n_o,            // External System Reset output
-                                                                            //   (for the processor cluster's components or
-                                                                            //    external SOC (could be useful in small
-                                                                            //    SCR-core-centric SOCs))
-    output  logic                                   sys_rdc_qlfy_o,         // System-to-External SOC Reset Domain Crossing Qualifier
-`endif // SCR1_DBG_EN
 
-    // Fuses
-    input   logic [`SCR1_XLEN-1:0]                  fuse_mhartid,           // Hart ID
-`ifdef SCR1_DBG_EN
-    input   logic [31:0]                            fuse_idcode,            // TAPC IDCODE
-`endif // SCR1_DBG_EN
-
-    // IRQ
-`ifdef SCR1_IPIC_EN
-    input   logic [SCR1_IRQ_LINES_NUM-1:0]          irq_lines,              // IRQ lines to IPIC
-`else // SCR1_IPIC_EN
     input   logic                                   ext_irq,                // External IRQ input
-`endif // SCR1_IPIC_EN
     input   logic                                   soft_irq,               // Software IRQ input
-
-`ifdef SCR1_DBG_EN
-    // -- JTAG I/F
-    input   logic                                   trst_n,
-    input   logic                                   tck,
-    input   logic                                   tms,
-    input   logic                                   tdi,
-    output  logic                                   tdo,
-    output  logic                                   tdo_en,
-`endif // SCR1_DBG_EN
 
     // Instruction Memory Interface
     output  logic [3:0]                             imem_hprot,
@@ -171,50 +141,6 @@ logic [63:0]                                        timer_val;
 // Reset logic
 //-------------------------------------------------------------------------------
 // Power-Up Reset synchronizer
-scr1_reset_sync_cell #(
-    .STAGES_AMOUNT       (SCR1_CLUSTER_TOP_RST_SYNC_STAGES_NUM)
-) i_pwrup_rstn_reset_sync (
-    .rst_n          (pwrup_rst_n     ),
-    .clk            (clk             ),
-    .test_rst_n     (test_rst_n      ),
-    .test_mode      (test_mode       ),
-    .rst_n_in       (1'b1            ),
-    .rst_n_out      (pwrup_rst_n_sync)
-);
-
-// Regular Reset synchronizer
-scr1_reset_sync_cell #(
-    .STAGES_AMOUNT       (SCR1_CLUSTER_TOP_RST_SYNC_STAGES_NUM)
-) i_rstn_reset_sync (
-    .rst_n          (pwrup_rst_n     ),
-    .clk            (clk             ),
-    .test_rst_n     (test_rst_n      ),
-    .test_mode      (test_mode       ),
-    .rst_n_in       (rst_n           ),
-    .rst_n_out      (rst_n_sync      )
-);
-
-// CPU Reset synchronizer
-scr1_reset_sync_cell #(
-    .STAGES_AMOUNT       (SCR1_CLUSTER_TOP_RST_SYNC_STAGES_NUM)
-) i_cpu_rstn_reset_sync (
-    .rst_n          (pwrup_rst_n     ),
-    .clk            (clk             ),
-    .test_rst_n     (test_rst_n      ),
-    .test_mode      (test_mode       ),
-    .rst_n_in       (cpu_rst_n       ),
-    .rst_n_out      (cpu_rst_n_sync  )
-);
-
-`ifdef SCR1_DBG_EN
-// TAPC Reset
-scr1_reset_and2_cell i_tapc_rstn_and2_cell (
-    .rst_n_in       ({trst_n, pwrup_rst_n}),
-    .test_rst_n     (test_rst_n      ),
-    .test_mode      (test_mode       ),
-    .rst_n_out      (tapc_trst_n     )
-);
-`endif // SCR1_DBG_EN
 
 //-------------------------------------------------------------------------------
 // SCR1 core instance
