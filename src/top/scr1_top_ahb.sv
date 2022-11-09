@@ -31,9 +31,9 @@ module ARAMB_RISCV_180_SOC (
     output  logic [2:0]                             imem_hsize,
     output  logic [1:0]                             imem_htrans,
     output  logic                                   imem_hmastlock,
-    output  logic [SCR1_AHB_WIDTH-1:0]              imem_haddr,
+    output  logic [31:0]              imem_haddr,
     input   logic                                   imem_hready,
-    input   logic [SCR1_AHB_WIDTH-1:0]              imem_hrdata,
+    input   logic [31:0]              imem_hrdata,
     input   logic                                   imem_hresp,
 
     // Data Memory Interface
@@ -42,11 +42,11 @@ module ARAMB_RISCV_180_SOC (
     output  logic [2:0]                             dmem_hsize,
     output  logic [1:0]                             dmem_htrans,
     output  logic                                   dmem_hmastlock,
-    output  logic [SCR1_AHB_WIDTH-1:0]              dmem_haddr,
+    output  logic [31:0]              dmem_haddr,
     output  logic                                   dmem_hwrite,
-    output  logic [SCR1_AHB_WIDTH-1:0]              dmem_hwdata,
+    output  logic [31:0]              dmem_hwdata,
     input   logic                                   dmem_hready,
-    input   logic [SCR1_AHB_WIDTH-1:0]              dmem_hrdata,
+    input   logic [31:0]              dmem_hrdata,
     input   logic                                   dmem_hresp
 );
 
