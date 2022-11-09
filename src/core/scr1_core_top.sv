@@ -118,21 +118,7 @@ assign core_rst_n_o         = core_rst_n;
 scr1_pipe_top i_pipe_top (
     // Control
     .pipe_rst_n                     (core_rst_n             ),
-`ifdef SCR1_DBG_EN
-    .pipe2hdu_rdc_qlfy_i            (core2hdu_rdc_qlfy      ),
-    .dbg_rst_n                      (hdu_rst_n              ),
-`endif // SCR1_DBG_EN
-`ifndef SCR1_CLKCTRL_EN
     .clk                            (clk                    ),
-`else // SCR1_CLKCTRL_EN
-    .clk                            (clk_pipe               ),
-    .pipe2clkctl_sleep_req_o        (sleep_pipe             ),
-    .pipe2clkctl_wake_req_o         (wake_pipe              ),
-    .clkctl2pipe_clk_alw_on_i       (clk_alw_on             ),
-    .clkctl2pipe_clk_dbgc_i         (clk_dbgc               ),
-    .clkctl2pipe_clk_en_i           (clk_pipe_en            ),
-`endif // SCR1_CLKCTRL_EN
-
     // Instruction memory interface
     .pipe2imem_req_o                (core2imem_req_o        ),
     .pipe2imem_cmd_o                (core2imem_cmd_o        ),
@@ -150,53 +136,17 @@ scr1_pipe_top i_pipe_top (
     .dmem2pipe_req_ack_i            (dmem2core_req_ack_i    ),
     .dmem2pipe_rdata_i              (dmem2core_rdata_i      ),
     .dmem2pipe_resp_i               (dmem2core_resp_i       ),
-
-`ifdef SCR1_DBG_EN
-    // Debug interface:
-    .dbg_en                         (1'b1                   ),
-    // Debug interface:
-    // DM <-> Pipeline: HART Run Control i/f
-    .dm2pipe_active_i               (dm_active              ),
-    .dm2pipe_cmd_req_i              (dm_cmd_req             ),
-    .dm2pipe_cmd_i                  (dm_cmd                 ),
-    .pipe2dm_cmd_resp_o             (dm_cmd_resp            ),
-    .pipe2dm_cmd_rcode_o            (dm_cmd_rcode           ),
-    .pipe2dm_hart_event_o           (dm_hart_event          ),
-    .pipe2dm_hart_status_o          (dm_hart_status         ),
-
-    // DM <-> Pipeline: Program Buffer - HART instruction execution i/f
-    .pipe2dm_pbuf_addr_o            (dm_pbuf_addr           ),
-    .dm2pipe_pbuf_instr_i           (dm_pbuf_instr          ),
-
-    // DM <-> Pipeline: HART Abstract Data regs i/f
-    .pipe2dm_dreg_req_o             (dm_dreg_req            ),
-    .pipe2dm_dreg_wr_o              (dm_dreg_wr             ),
-    .pipe2dm_dreg_wdata_o           (dm_dreg_wdata          ),
-    .dm2pipe_dreg_resp_i            (dm_dreg_resp           ),
-    .dm2pipe_dreg_fail_i            (dm_dreg_fail           ),
-    .dm2pipe_dreg_rdata_i           (dm_dreg_rdata          ),
-
-    // DM <-> Pipeline: PC i/f
-    .pipe2dm_pc_sample_o            (dm_pc_sample           ),
-`endif // SCR1_DBG_EN
-
     // IRQ
-`ifdef SCR1_IPIC_EN
-    .soc2pipe_irq_lines_i           (core_irq_lines_i       ),
-`else // SCR1_IPIC_EN
+
     .soc2pipe_irq_ext_i             (core_irq_ext_i         ),
-`endif // SCR1_IPIC_EN
     .soc2pipe_irq_soft_i            (core_irq_soft_i        ),
     .soc2pipe_irq_mtimer_i          (core_irq_mtimer_i      ),
-
     // Memory-mapped external timer
     .soc2pipe_mtimer_val_i          (core_mtimer_val_i      ),
 
     // Fuse
     .soc2pipe_fuse_mhartid_i        (core_fuse_mhartid_i    )
 );
-
-
 
 
 endmodule : scr1_core_top

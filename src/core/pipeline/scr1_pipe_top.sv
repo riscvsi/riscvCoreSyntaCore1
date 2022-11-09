@@ -254,39 +254,6 @@ scr1_pipe_mprf i_pipe_mprf (
 //-------------------------------------------------------------------------------
 // Control and status registers
 //-------------------------------------------------------------------------------
-scr1_pipe_csr i_pipe_csr (
-    .rst_n                      (pipe_rst_n              ),
-    .clk                        (clk                     ),
-    // EXU <-> CSR read/write interface
-    .exu2csr_r_req_i            (exu2csr_r_req           ),
-    .exu2csr_rw_addr_i          (exu2csr_rw_addr         ),
-    .csr2exu_r_data_o           (csr2exu_r_data          ),
-    .exu2csr_w_req_i            (exu2csr_w_req           ),
-    .exu2csr_w_cmd_i            (exu2csr_w_cmd           ),
-    .exu2csr_w_data_i           (exu2csr_w_data          ),
-    .csr2exu_rw_exc_o           (csr2exu_rw_exc          ),
-    // EXU <-> CSR event interface
-    .exu2csr_take_irq_i         (exu2csr_take_irq        ),
-    .exu2csr_take_exc_i         (exu2csr_take_exc        ),
-    .exu2csr_mret_update_i      (exu2csr_mret_update     ),
-    .exu2csr_mret_instr_i       (exu2csr_mret_instr      ),
-    .exu2csr_exc_code_i         (exu2csr_exc_code        ),
-    .exu2csr_trap_val_i         (exu2csr_trap_val        ),
-    .csr2exu_new_pc_o           (csr2exu_new_pc          ),
-    .csr2exu_irq_o              (csr2exu_irq             ),
-    .csr2exu_ip_ie_o            (csr2exu_ip_ie           ),
-    .csr2exu_mstatus_mie_up_o   (csr2exu_mstatus_mie_up  ),
-    // CSR <-> PC interface
-    .exu2csr_pc_curr_i          (curr_pc                 ),
-    .exu2csr_pc_next_i          (next_pc                 ),
-    // IRQ
-    .soc2csr_irq_ext_i          (soc2pipe_irq_ext_i      ),
-    .soc2csr_irq_soft_i         (soc2pipe_irq_soft_i     ),
-    .soc2csr_irq_mtimer_i       (soc2pipe_irq_mtimer_i   ),
-    // Memory-mapped external timer
-    .soc2csr_mtimer_val_i       (soc2pipe_mtimer_val_i   ),
-    .soc2csr_fuse_mhartid_i     (soc2pipe_fuse_mhartid_i )
-);
 
 //-------------------------------------------------------------------------------
 // Integrated programmable interrupt controller

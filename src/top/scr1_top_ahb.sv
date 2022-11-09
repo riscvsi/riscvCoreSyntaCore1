@@ -12,7 +12,7 @@
  `define SCR1_IMEM_ROUTER_EN
 `endif // SCR1_TCM_EN
 
-module scr1_top_ahb (
+module ARAMB_RISCV_180_SOC (
     // Control
     input   logic                                   pwrup_rst_n,            // Power-Up Reset
     input   logic                                   rst_n,                  // Regular Reset signal
@@ -63,9 +63,6 @@ logic                                               pwrup_rst_n_sync;
 logic                                               rst_n_sync;
 logic                                               cpu_rst_n_sync;
 logic                                               core_rst_n_local;
-`ifdef SCR1_DBG_EN
-logic                                               tapc_trst_n;
-`endif // SCR1_DBG_EN
 
 // Instruction memory interface from core to router
 logic                                               core_imem_req_ack;
@@ -103,25 +100,6 @@ logic [`SCR1_DMEM_DWIDTH-1:0]                       ahb_dmem_wdata;
 logic [`SCR1_DMEM_DWIDTH-1:0]                       ahb_dmem_rdata;
 type_scr1_mem_resp_e                                ahb_dmem_resp;
 
-`ifdef SCR1_TCM_EN
-// Instruction memory interface from router to TCM
-logic                                               tcm_imem_req_ack;
-logic                                               tcm_imem_req;
-type_scr1_mem_cmd_e                                 tcm_imem_cmd;
-logic [`SCR1_IMEM_AWIDTH-1:0]                       tcm_imem_addr;
-logic [`SCR1_IMEM_DWIDTH-1:0]                       tcm_imem_rdata;
-type_scr1_mem_resp_e                                tcm_imem_resp;
-
-// Data memory interface from router to TCM
-logic                                               tcm_dmem_req_ack;
-logic                                               tcm_dmem_req;
-type_scr1_mem_cmd_e                                 tcm_dmem_cmd;
-type_scr1_mem_width_e                               tcm_dmem_width;
-logic [`SCR1_DMEM_AWIDTH-1:0]                       tcm_dmem_addr;
-logic [`SCR1_DMEM_DWIDTH-1:0]                       tcm_dmem_wdata;
-logic [`SCR1_DMEM_DWIDTH-1:0]                       tcm_dmem_rdata;
-type_scr1_mem_resp_e                                tcm_dmem_resp;
-`endif // SCR1_TCM_EN
 
 // Data memory interface from router to memory-mapped timer
 logic                                               timer_dmem_req_ack;
@@ -155,38 +133,19 @@ scr1_core_top i_core_top (
     .clk                        (clk              ),
     .core_rst_n_o               (core_rst_n_local ),
     .core_rdc_qlfy_o            (                 ),
-`ifdef SCR1_DBG_EN
-    .sys_rst_n_o                (sys_rst_n_o      ),
-    .sys_rdc_qlfy_o             (sys_rdc_qlfy_o   ),
-`endif // SCR1_DBG_EN
+
 
     // Fuses
     .core_fuse_mhartid_i        (fuse_mhartid     ),
-`ifdef SCR1_DBG_EN
-    .tapc_fuse_idcode_i         (fuse_idcode      ),
-`endif // SCR1_DBG_EN
 
     // IRQ
-`ifdef SCR1_IPIC_EN
-    .core_irq_lines_i           (irq_lines        ),
-`else // SCR1_IPIC_EN
     .core_irq_ext_i             (ext_irq          ),
-`endif // SCR1_IPIC_EN
     .core_irq_soft_i            (soft_irq         ),
     .core_irq_mtimer_i          (timer_irq        ),
 
     // Memory-mapped external timer
     .core_mtimer_val_i          (timer_val        ),
 
-`ifdef SCR1_DBG_EN
-    // Debug interface
-    .tapc_trst_n                (tapc_trst_n      ),
-    .tapc_tck                   (tck              ),
-    .tapc_tms                   (tms              ),
-    .tapc_tdi                   (tdi              ),
-    .tapc_tdo                   (tdo              ),
-    .tapc_tdo_en                (tdo_en           ),
-`endif // SCR1_DBG_EN
 
     // Instruction memory interface
     .imem2core_req_ack_i        (core_imem_req_ack),
@@ -208,7 +167,7 @@ scr1_core_top i_core_top (
 );
 
 
-`ifdef SCR1_TCM_EN
+
 //-------------------------------------------------------------------------------
 // TCM instance
 //-------------------------------------------------------------------------------
@@ -235,7 +194,7 @@ scr1_tcm #(
     .dmem_rdata     (tcm_dmem_rdata  ),
     .dmem_resp      (tcm_dmem_resp   )
 );
-`endif // SCR1_TCM_EN
+
 
 
 //-------------------------------------------------------------------------------
