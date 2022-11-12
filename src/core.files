@@ -1,8 +1,8 @@
-core/pipeline/scr1_pipe_exu.sv
-core/pipeline/scr1_pipe_ialu.sv
-core/pipeline/scr1_pipe_idu.sv
-core/pipeline/scr1_pipe_ifu.sv
-core/pipeline/scr1_pipe_lsu.sv
-core/pipeline/scr1_pipe_mprf.sv
-core/pipeline/scr1_pipe_top.sv
-core/scr1_core_top.sv
+/nfs/site/disks/vmisd_vclp_efficiency/rcg/test/cadence/venvRcg/riscvCoreSyntaCore1/src/core/pipeline/scr1_pipe_exu.sv
+/nfs/site/disks/vmisd_vclp_efficiency/rcg/test/cadence/venvRcg/riscvCoreSyntaCore1/src/core/pipeline/scr1_pipe_ialu.sv
+/nfs/site/disks/vmisd_vclp_efficiency/rcg/test/cadence/venvRcg/riscvCoreSyntaCore1/src/core/pipeline/scr1_pipe_idu.sv
+/nfs/site/disks/vmisd_vclp_efficiency/rcg/test/cadence/venvRcg/riscvCoreSyntaCore1/src/core/pipeline/scr1_pipe_ifu.sv
+/nfs/site/disks/vmisd_vclp_efficiency/rcg/test/cadence/venvRcg/riscvCoreSyntaCore1/src/core/pipeline/scr1_pipe_lsu.sv
+/nfs/site/disks/vmisd_vclp_efficiency/rcg/test/cadence/venvRcg/riscvCoreSyntaCore1/src/core/pipeline/scr1_pipe_mprf.sv
+/nfs/site/disks/vmisd_vclp_efficiency/rcg/test/cadence/venvRcg/riscvCoreSyntaCore1/src/core/pipeline/scr1_pipe_top.sv
+/nfs/site/disks/vmisd_vclp_efficiency/rcg/test/cadence/venvRcg/riscvCoreSyntaCore1/src/core/scr1_core_top.sv
