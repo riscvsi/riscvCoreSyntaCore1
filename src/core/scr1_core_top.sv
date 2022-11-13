@@ -3,19 +3,19 @@
 /// @brief      SCR1 core top
 ///
 
-`include "scr1_arch_description.svh"
-`include "scr1_arch_types.svh"
-`include "scr1_memif.svh"
+//`include "scr1_arch_description.svh"
+//`include "scr1_arch_types.svh"
+//`include "scr1_memif.svh"
 
-`ifdef SCR1_DBG_EN
-`include "scr1_tapc.svh"
-`include "scr1_dm.svh"
-`include "scr1_hdu.svh"
-`endif // SCR1_DBG_EN
+//`ifdef SCR1_DBG_EN
+//`include "scr1_tapc.svh"
+//`include "scr1_dm.svh"
+//`include "scr1_hdu.svh"
+//`endif // SCR1_DBG_EN
 
-`ifdef SCR1_IPIC_EN
-`include "scr1_ipic.svh"
-`endif // SCR1_IPIC_EN
+//`ifdef SCR1_IPIC_EN
+//`include "scr1_ipic.svh"
+//`endif // SCR1_IPIC_EN
 
 module scr1_core_top (
     // Common
@@ -31,14 +31,8 @@ module scr1_core_top (
 
     // Fuses
     input   logic [`SCR1_XLEN-1:0]                  core_fuse_mhartid_i,        // Fuse MHARTID value
-
-
     // IRQ
-`ifdef SCR1_IPIC_EN
-    input   logic [SCR1_IRQ_LINES_NUM-1:0]          core_irq_lines_i,           // External interrupt request lines
-`else
     input   logic                                   core_irq_ext_i,             // External interrupt request
-`endif // SCR1_IPIC_EN
     input   logic                                   core_irq_soft_i,            // Software generated interrupt request
     input   logic                                   core_irq_mtimer_i,          // Machine timer interrupt request
 
