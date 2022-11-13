@@ -22,11 +22,6 @@
 
 module scr1_pipe_idu
 (
-`ifdef SCR1_TRGT_SIMULATION
-    input   logic                           rst_n,                  // IDU reset
-    input   logic                           clk,                    // IDU clock
-`endif // SCR1_TRGT_SIMULATION
-
     // IFU <-> IDU interface
     output  logic                           idu2ifu_rdy_o,          // IDU ready for new data
     input   logic [`SCR1_IMEM_DWIDTH-1:0]   ifu2idu_instr_i,        // IFU instruction
