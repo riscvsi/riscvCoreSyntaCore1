@@ -22,9 +22,9 @@
  //
 //-------------------------------------------------------------------------------
 
-`include "scr1_arch_description.svh"
-`include "scr1_riscv_isa_decoding.svh"
-`include "scr1_search_ms1.svh"
+//`include "scr1_arch_description.svh"
+//`include "scr1_riscv_isa_decoding.svh"
+//`include "scr1_search_ms1.svh"
 
 
 module scr1_pipe_ialu (

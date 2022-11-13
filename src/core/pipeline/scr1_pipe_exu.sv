@@ -37,19 +37,19 @@
  //
 //------------------------------------------------------------------------------
 
-`include "scr1_arch_description.svh"
-`include "scr1_arch_types.svh"
-`include "scr1_memif.svh"
-`include "scr1_riscv_isa_decoding.svh"
-`include "scr1_csr.svh"
-
-`ifdef SCR1_DBG_EN
- `include "scr1_hdu.svh"
-`endif // SCR1_DBG_EN
-
-`ifdef SCR1_TDU_EN
- `include "scr1_tdu.svh"
-`endif // SCR1_TDU_EN
+//`include "scr1_arch_description.svh"
+//`include "scr1_arch_types.svh"
+//`include "scr1_memif.svh"
+//`include "scr1_riscv_isa_decoding.svh"
+//`include "scr1_csr.svh"
+//
+//`ifdef SCR1_DBG_EN
+// `include "scr1_hdu.svh"
+//`endif // SCR1_DBG_EN
+//
+//`ifdef SCR1_TDU_EN
+// `include "scr1_tdu.svh"
+//`endif // SCR1_TDU_EN
 
 module scr1_pipe_exu (
     // Common

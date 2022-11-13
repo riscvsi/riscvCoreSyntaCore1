@@ -24,11 +24,11 @@
  //
 //------------------------------------------------------------------------------
 
-`include "scr1_memif.svh"
-`include "scr1_arch_description.svh"
-`ifdef SCR1_DBG_EN
-`include "scr1_hdu.svh"
-`endif // SCR1_DBG_EN
+//`include "scr1_memif.svh"
+//`include "scr1_arch_description.svh"
+//`ifdef SCR1_DBG_EN
+//`include "scr1_hdu.svh"
+//`endif // SCR1_DBG_EN
 
 module scr1_pipe_ifu
 (
