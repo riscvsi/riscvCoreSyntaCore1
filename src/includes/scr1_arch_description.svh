@@ -1,7 +1,3 @@
-/// Copyright by Syntacore LLC © 2016-2021. See LICENSE for details
-/// @file       <scr1_arch_description.svh>
-/// @brief      Architecture description file
-///
 
 `ifndef SCR1_ARCH_DESCRIPTION_SVH
 `define SCR1_ARCH_DESCRIPTION_SVH

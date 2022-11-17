@@ -1,7 +1,4 @@
-/// Copyright by Syntacore LLC © 2016-2021. See LICENSE for details
-/// @file       <scr1_dm.svh>
-/// @brief      Debug Module header file
-///
+
 
 `ifndef SCR1_INCLUDE_DM_DEFS
 `define SCR1_INCLUDE_DM_DEFS

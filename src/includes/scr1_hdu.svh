@@ -1,7 +1,4 @@
-/// Copyright by Syntacore LLC © 2016-2021. See LICENSE for details
-/// @file       <scr1_pipe_hdu.svh>
-/// @brief      HART Debug Unit definitions file
-///
+
 
 `ifdef SCR1_DBG_EN
 `ifndef SCR1_INCLUDE_HDU_DEFS

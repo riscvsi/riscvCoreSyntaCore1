@@ -1,7 +1,4 @@
-/// Copyright by Syntacore LLC © 2016-2021. See LICENSE for details
-/// @file       <scr1_imem_ahb.sv>
-/// @brief      Instruction memory AHB bridge
-///
+
 
 `include "scr1_ahb.svh"
 `include "scr1_memif.svh"

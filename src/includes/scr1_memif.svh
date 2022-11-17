@@ -1,7 +1,4 @@
-/// Copyright by Syntacore LLC © 2016-2021. See LICENSE for details
-/// @file       <scr1_memif.svh>
-/// @brief      Memory interface definitions file
-///
+
 
 `ifndef SCR1_MEMIF_SVH
 `define SCR1_MEMIF_SVH

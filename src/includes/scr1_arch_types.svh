@@ -1,7 +1,4 @@
-/// Copyright by Syntacore LLC © 2016-2021. See LICENSE for details
-/// @file       <scr1_arch_types.svh>
-/// @brief      Pipeline types description file
-///
+
 
 `ifndef SCR1_ARCH_TYPES_SVH
 `define SCR1_ARCH_TYPES_SVH

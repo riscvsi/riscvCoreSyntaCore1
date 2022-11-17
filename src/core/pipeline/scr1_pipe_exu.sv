@@ -1,8 +1,3 @@
-/// Copyright by Syntacore LLC © 2016-2021. See LICENSE for details
-/// @file       <scr1_pipe_exu.sv>
-/// @brief      Execution Unit (EXU)
-///
-
 //------------------------------------------------------------------------------
  //
  // Functionality:
@@ -37,19 +32,6 @@
  //
 //------------------------------------------------------------------------------
 
-//`include "scr1_arch_description.svh"
-//`include "scr1_arch_types.svh"
-//`include "scr1_memif.svh"
-//`include "scr1_riscv_isa_decoding.svh"
-//`include "scr1_csr.svh"
-//
-//`ifdef SCR1_DBG_EN
-// `include "scr1_hdu.svh"
-//`endif // SCR1_DBG_EN
-//
-//`ifdef SCR1_TDU_EN
-// `include "scr1_tdu.svh"
-//`endif // SCR1_TDU_EN
 
 module scr1_pipe_exu (
     // Common
@@ -110,9 +92,7 @@ module scr1_pipe_exu (
     output  logic                               exu2pipe_init_pc_o,         // Reset exit
     output  logic                               exu2pipe_wfi_run2halt_o,    // Transition to WFI halted state
     output  logic                               exu2pipe_instret_o,         // Instruction retired (with or without exception)
-`ifndef SCR1_CSR_REDUCED_CNT
     output  logic                               exu2csr_instret_no_exc_o,   // Instruction retired (without exception)
-`endif // SCR1_CSR_REDUCED_CNT
     output  logic                               exu2pipe_exu_busy_o,        // EXU busy
 
 

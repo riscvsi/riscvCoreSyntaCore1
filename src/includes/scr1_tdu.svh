@@ -1,7 +1,4 @@
-/// Copyright by Syntacore LLC © 2016-2021. See LICENSE for details
-/// @file       <scr1_tdu.svh>
-/// @brief      Trigger Debug Module header
-///
+
 
 `ifndef SCR1_INCLUDE_TDU_DEFS
 `define SCR1_INCLUDE_TDU_DEFS

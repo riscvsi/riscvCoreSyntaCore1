@@ -1,7 +1,4 @@
-/// Copyright by Syntacore LLC © 2016-2021. See LICENSE for details
-/// @file       <scr1_riscv_isa_decoding.svh>
-/// @brief      RISC-V ISA definitions file
-///
+
 
 `ifndef SCR1_RISCV_ISA_DECODING_SVH
 `define SCR1_RISCV_ISA_DECODING_SVH
@@ -182,4 +179,3 @@ typedef struct packed {
 } type_scr1_exu_cmd_s;
 
 `endif // SCR1_RISCV_ISA_DECODING_SVH
-

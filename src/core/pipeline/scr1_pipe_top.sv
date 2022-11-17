@@ -1,24 +1,3 @@
-/// Copyright by Syntacore LLC © 2016-2021. See LICENSE for details
-/// @file       <scr1_pipe_top.sv>
-/// @brief      SCR1 pipeline top
-///
-
-//`include "scr1_arch_description.svh"
-//`include "scr1_memif.svh"
-//`include "scr1_riscv_isa_decoding.svh"
-//`include "scr1_csr.svh"
-
-//`ifdef SCR1_IPIC_EN
-//`include "scr1_ipic.svh"
-//`endif // SCR1_IPIC_EN
-
-//`ifdef SCR1_DBG_EN
-//`include "scr1_hdu.svh"
-//`endif // SCR1_DBG_EN
-
-//`ifdef SCR1_TDU_EN
-//`include "scr1_tdu.svh"
-//`endif // SCR1_TDU_EN
 
 module scr1_pipe_top (
     // Common
@@ -49,7 +28,8 @@ module scr1_pipe_top (
     // Memory-mapped external timer
     input   logic [63:0]                                soc2pipe_mtimer_val_i,      // Machine timer value
     // Fuse
-    input   logic [`SCR1_XLEN-1:0]                      soc2pipe_fuse_mhartid_i     // Fuse MHARTID value
+    input   logic [`SCR1_XLEN-1:0]                      soc2pipe_fuse_mhartid_i,     // Fuse MHARTID value
+    output   logic                                       clkout,                        // Pipe clock out for ram
 );
 
 //-------------------------------------------------------------------------------

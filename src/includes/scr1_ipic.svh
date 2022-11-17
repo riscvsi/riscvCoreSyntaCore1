@@ -1,7 +1,4 @@
-/// Copyright by Syntacore LLC © 2016-2021. See LICENSE for details
-/// @file       <scr1_ipic.svh>
-/// @brief      IPIC header file
-///
+
 
 `ifndef SCR1_IPIC_SVH
 `define SCR1_IPIC_SVH

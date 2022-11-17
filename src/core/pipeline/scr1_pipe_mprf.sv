@@ -1,10 +1,3 @@
-/// Copyright by Syntacore LLC © 2016-2021. See LICENSE for details
-/// @file       <scr1_pipe_mprf.sv>
-/// @brief      Multi Port Register File (MPRF)
-///
-
-//`include "scr1_arch_description.svh"
-//`include "scr1_arch_types.svh"
 
 module scr1_pipe_mprf (
     input   logic                               rst_n,                      // MPRF reset

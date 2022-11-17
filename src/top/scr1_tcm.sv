@@ -1,12 +1,5 @@
-/// Copyright by Syntacore LLC © 2016-2020. See LICENSE for details
-/// @file       <scr1_tcm.sv>
-/// @brief      Tightly-Coupled Memory (TCM)
-///
 
-`include "scr1_memif.svh"
-`include "scr1_arch_description.svh"
 
-`ifdef SCR1_TCM_EN
 module scr1_tcm
 #(
     parameter SCR1_TCM_SIZE = `SCR1_IMEM_AWIDTH'h00010000
@@ -127,5 +120,3 @@ end
 assign dmem_rdata = dmem_rdata_local >> ( 8 * dmem_rdata_shift_reg );
 
 endmodule : scr1_tcm
-
-`endif // SCR1_TCM_EN

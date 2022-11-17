@@ -1,7 +1,4 @@
-/// Copyright by Syntacore LLC © 2016-2021. See LICENSE for details
-/// @file       <scr1_search_ms1.svh>
-/// @brief      Most significant one search function
-///
+
 
 `ifndef SCR1_SEARCH_MS1_SVH
 `define SCR1_SEARCH_MS1_SVH

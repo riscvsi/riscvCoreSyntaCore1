@@ -1,7 +1,3 @@
-/// Copyright by Syntacore LLC © 2016-2021. See LICENSE for details
-/// @file       <scr1_timer.sv>
-/// @brief      Memory-mapped Timer
-///
 
 `include "scr1_arch_description.svh"
 `include "scr1_memif.svh"

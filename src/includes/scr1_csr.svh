@@ -1,7 +1,4 @@
-/// Copyright by Syntacore LLC © 2016-2021. See LICENSE for details
-/// @file       <scr1_csr.svh>
-/// @brief      CSR mapping/description file
-///
+
 
 `ifndef SCR1_CSR_SVH
 `define SCR1_CSR_SVH
