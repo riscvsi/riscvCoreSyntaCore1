@@ -220,15 +220,25 @@ scr1_pipe_exu i_pipe_exu (
 //-------------------------------------------------------------------------------
 // Multi-port register file
 //-------------------------------------------------------------------------------
-scr1_pipe_mprf i_pipe_mprf (
-    .clk                    (clk              ),
-    .exu2mprf_rs1_addr_i    (exu2mprf_rs1_addr),
-    .mprf2exu_rs1_data_o    (mprf2exu_rs1_data),
-    .exu2mprf_rs2_addr_i    (exu2mprf_rs2_addr),
-    .mprf2exu_rs2_data_o    (mprf2exu_rs2_data),
-    .exu2mprf_w_req_i       (exu2mprf_w_req   ),
-    .exu2mprf_rd_addr_i     (exu2mprf_rd_addr ),
-    .exu2mprf_rd_data_i     (exu2mprf_rd_data )
+// scr1_pipe_mprf i_pipe_mprf (
+//    .clk                    (clk              ),
+//    .exu2mprf_rs1_addr_i    (exu2mprf_rs1_addr),
+//    .mprf2exu_rs1_data_o    (mprf2exu_rs1_data),
+//    .exu2mprf_rs2_addr_i    (exu2mprf_rs2_addr),
+//    .mprf2exu_rs2_data_o    (mprf2exu_rs2_data),
+//    .exu2mprf_w_req_i       (exu2mprf_w_req   ),
+//    .exu2mprf_rd_addr_i     (exu2mprf_rd_addr ),
+//    .exu2mprf_rd_data_i     (exu2mprf_rd_data )
+//);
+
+
+sram_32_1024_scl180 sram_32_1024_scl180 (
+    .clk0    ( clk),
+    .csb0   ( curr_pc ),
+    .web0  ( curr_pc ),
+    .addr0     ( exu2mprf_rs2_addr ),
+    .din0   (  exu2mprf_rd_data ),
+    .dout0   ( mprf2exu_rs1_data )
 );
 
 //-------------------------------------------------------------------------------
