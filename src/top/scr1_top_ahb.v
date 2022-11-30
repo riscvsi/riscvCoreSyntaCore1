@@ -95,7 +95,7 @@ module ARAMB_RISCV_180_SOC (
      wire                                    dmem_hready;
      wire  [31:0]              dmem_hrdata;
      wire                                    dmem_hresp;
-
+    wire [31:0] core_dmem_addr;
 
 scr1_pipe_top i_pipe_top (
     // Control
@@ -116,26 +116,26 @@ scr1_pipe_top i_pipe_top (
     .pipe2dmem_addr_o               (core_dmem_addr        ), 
     .pipe2dmem_wdata_o              (core_dmem_wdata        ),
     .dmem2pipe_req_ack_i            (core_dmem_req_ack        ),
-    .dmem2pipe_rdata_i              (core_dmem_rdata        ),
+    .dmem2pipe_rdata_i              (imem_hrdata  ),
     .dmem2pipe_resp_i               (core_dmem_resp        ),
     // IRQ
 
-    .soc2pipe_irq_ext_i             (ext_irq         ),
-    .soc2pipe_irq_soft_i            (soft_irq        ),
-    .soc2pipe_irq_mtimer_i          (timer_irq      ),
+    .soc2pipe_irq_ext_i             ( imem_hready ),
+    .soc2pipe_irq_soft_i            (test_mode ),
+    .soc2pipe_irq_mtimer_i          (dmem_hready ),
     // Memory-mapped external timer
-    .soc2pipe_mtimer_val_i          (timer_val      ),
+    .soc2pipe_mtimer_val_i          (64'b0),
 
     // Fuse
-    .soc2pipe_fuse_mhartid_i        (fuse_mhartid    ),
+    .soc2pipe_fuse_mhartid_i        (dmem_hrdata),
     .clkout                         (clkout)
 );
 
 
 sram_32_1024_scl180 sram_32_1024_scl180 (
     .clk0    ( clkout),
-    .csb0   ( core_imem_req ),
-    .web0  ( core_imem_cmd ),
+    .csb0   ( pwrup_rst_n ),
+    .web0  ( dmem_hready ),
     .addr0     ( core_dmem_addr ),
     .din0   ( core_dmem_wdata ),
     .dout0   ( dmem_hwdata)
