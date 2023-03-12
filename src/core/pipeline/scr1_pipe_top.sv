@@ -95,7 +95,13 @@ logic [`SCR1_XLEN-1:0]                      csr2exu_new_pc;         // Exception
 logic                                       csr2exu_irq;            // IRQ request
 logic                                       csr2exu_ip_ie;          // Some IRQ pending and locally enabled
 logic                                       csr2exu_mstatus_mie_up; // MSTATUS or MIE update in the current cycle
-
+logic [31:0]      ram1Connram2;
+logic [31:0]      ram2Connram3;
+logic [31:0]      ram3Connram4;
+logic [31:0]      ram4Connram5;
+logic [31:0]      ram5Connram6;
+logic [31:0]      ram6Connram7;
+logic [31:0]      ram7Connram8;
 
 logic                                       exu_busy;
 
@@ -232,18 +238,102 @@ scr1_pipe_exu i_pipe_exu (
 //);
 
 
-sram_32_1024_scl180 sram_32_1024_scl180 (
+sram_32_1024_scl180 sram_32_1024_scl180_ram1 (
     .clk0    ( clk),
     .csb0   ( curr_pc ),
     .web0  ( curr_pc ),
     .addr0     ( exu2mprf_rs2_addr ),
     .din0   (  exu2mprf_rd_data ),
-    .dout0   ( mprf2exu_rs1_data )
+    .dout0   ( ram1Connram2 )
 );
 
+
+sram_32_1024_scl180 sram_32_1024_scl180_ram2 (
+    .clk0    ( clk),
+    .csb0   ( curr_pc ),
+    .web0  ( curr_pc ),
+    .addr0     ( exu2mprf_rs2_addr ),
+    .din0   (  ram1Connram2 ),
+    .dout0   ( ram2Connram3 )
+);
+
+sram_32_1024_scl180 sram_32_1024_scl180_ram3 (
+    .clk0    ( clk),
+    .csb0   ( curr_pc ),
+    .web0  ( curr_pc ),
+    .addr0     ( exu2mprf_rs2_addr ),
+    .din0   (  ram2Connram3 ),
+    .dout0   ( ram3Connram4 )
+);
+
+sram_32_1024_scl180 sram_32_1024_scl180_ram4 (
+    .clk0    ( clk),
+    .csb0   ( curr_pc ),
+    .web0  ( curr_pc ),
+    .addr0     ( exu2mprf_rs2_addr ),
+    .din0   (  ram3Connram4 ),
+    .dout0   ( ram4Connram5 )
+);
+
+sram_32_1024_scl180 sram_32_1024_scl180_ram5 (
+    .clk0    ( clk),
+    .csb0   ( curr_pc ),
+    .web0  ( curr_pc ),
+    .addr0     ( exu2mprf_rs2_addr ),
+    .din0   (  ram4Connram5 ),
+    .dout0   ( ram5Connram6 )
+);
+
+sram_32_1024_scl180 sram_32_1024_scl180_ram6 (
+    .clk0    ( clk),
+    .csb0   ( curr_pc ),
+    .web0  ( curr_pc ),
+    .addr0     ( exu2mprf_rs2_addr ),
+    .din0   (  ram5Connram6 ),
+    .dout0   ( ram6Connram7 )
+);
+
+sram_32_1024_scl180 sram_32_1024_scl180_ram7 (
+    .clk0    ( clk),
+    .csb0   ( curr_pc ),
+    .web0  ( curr_pc ),
+    .addr0     ( exu2mprf_rs2_addr ),
+    .din0   (  ram6Connram7 ),
+    .dout0   ( ram7Connram8 )
+);
+
+
+sram_32_1024_scl180 sram_32_1024_scl180_ram8 (
+    .clk0    ( clk),
+    .csb0   ( curr_pc ),
+    .web0  ( curr_pc ),
+    .addr0     ( exu2mprf_rs2_addr ),
+    .din0   (  ram7Connram8 ),
+    .dout0   ( mprf2exu_rs1_data )
+);
 //-------------------------------------------------------------------------------
 // Control and status registers
 //-------------------------------------------------------------------------------
+
+i2c_master_top i2c_master_top_inst1(
+	.wb_clk_i (clk), 
+        .wb_rst_i (pipe_rst_n), 
+        .arst_i (pipe_rst_n), 
+        .wb_adr_i (exu2mprf_rs2_addr), 
+        .wb_dat_i (mprf2exu_rs1_data), 
+        .wb_dat_o,
+	.wb_we_i (dmem2pipe_req_ack_i), 
+        .wb_stb_i (dmem2pipe_req_ack_i), 
+        .wb_cyc_i (clk),
+        .wb_ack_o (pipe2dmem_cmd_o), 
+        .wb_inta_o (pipe2imem_cmd_o),
+	.scl_pad_i (pipe_rst_n), 
+        .scl_pad_o, 
+        .scl_padoen_o, 
+        .sda_pad_i (pipe_rst_n), 
+        .sda_pad_o, 
+        .sda_padoen_o );
+
 
 
 //-------------------------------------------------------------------------------
