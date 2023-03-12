@@ -103,6 +103,13 @@ logic [31:0]      ram5Connram6;
 logic [31:0]      ram6Connram7;
 logic [31:0]      ram7Connram8;
 
+logic [7:0]      i2cUartCon;
+logic       i2cSclPadCon;
+logic       i2cSclPadEnCon;
+logic       i2cSdaPadCon;
+logic       i2cSdaPadEnCon;
+
+
 logic                                       exu_busy;
 
 
@@ -321,19 +328,31 @@ i2c_master_top i2c_master_top_inst1(
         .arst_i (pipe_rst_n), 
         .wb_adr_i (exu2mprf_rs2_addr), 
         .wb_dat_i (mprf2exu_rs1_data), 
-        .wb_dat_o,
+        .wb_dat_o (i2cUartCon),
 	.wb_we_i (dmem2pipe_req_ack_i), 
         .wb_stb_i (dmem2pipe_req_ack_i), 
         .wb_cyc_i (clk),
         .wb_ack_o (pipe2dmem_cmd_o), 
         .wb_inta_o (pipe2imem_cmd_o),
 	.scl_pad_i (pipe_rst_n), 
-        .scl_pad_o, 
-        .scl_padoen_o, 
+        .scl_pad_o (i2cSclPadCon), 
+        .scl_padoen_o (i2cSclPadEnCon), 
         .sda_pad_i (pipe_rst_n), 
-        .sda_pad_o, 
-        .sda_padoen_o );
+        .sda_pad_o (i2cSdaPadCon), 
+        .sda_padoen_o (i2cSdaPadEnCon));
+ 
 
+uart uart_inst1(
+	.sys_clk (clk),
+	.sys_rst (pipe_rst_n),
+	.csr_a (exu2mprf_rs2_addr),
+	.csr_we (dmem2pipe_req_ack_i),
+	.csr_di (mprf2exu_rs1_data) ,
+	.csr_do (mprf2exu_rs1_data),
+	.rx_irq (i2cSclPadCon),
+	.tx_irq (i2cSdaPadCon),
+	.uart_rx (i2cSdaPadCon),
+	.uart_tx (i2cSdaPadCon));
 
 
 //-------------------------------------------------------------------------------
