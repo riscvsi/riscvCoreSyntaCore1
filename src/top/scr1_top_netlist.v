@@ -850,5 +850,7 @@ module ARAMB_RISCV_180_SOC (
 	.csb0(pwrup_rst_n),
 	.web0(dmem_hready),
 	.clk0(clkout));
+
+Analog Analog();
 endmodule
 
